@@ -1,0 +1,255 @@
+---
+title: "Clinical Validation Study Example in the NIH *All of Us* Research Program Database"
+output: rmarkdown::html_document
+vignette: >
+  %\VignetteIndexEntry{Clinical Validation Study Example in the NIH *All of Us* Research Program Database}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      warnings = FALSE, 
+                      message = FALSE, 
+                      comment = "#>")
+```
+
+**Author**: Patrick Wu  
+**Date**: 2021-04-05   
+
+**Note:** In this vignette, individual-level data are used for demonstration purposes only, and were not derived from real-world patients.  
+
+## Set up packages
+Install required packages
+```r
+install.packages("janitor")
+devtools::install_github("pwatrick/DrugRepurposingToolKit")
+```
+Import packages
+```{r}
+suppressPackageStartupMessages({
+  library(glue); 
+  library(lubridate); 
+  library(tidyverse);
+  library(vroom);
+  library(broom);
+  library(DrugRepurposingToolKit)
+}) 
+set.seed(1)
+```
+
+## Download data
+Define variables for functions
+```r
+drug_concept_id <- "1332418"
+biomarker_concept_id <- "3004249"
+indication_drug_concept_ids <-
+        glue("({drug_concept_id},19020068,1309068,1345141,904542,19026595,
+             40226742,1398937,1387219,932745,1335471,19011933,1334456,1318137,
+             19011879,1351557,19062195,1308842,1338005,1400959,1319751,1366279,
+             915829,1309799,19132932,948787,1335301,991382,1337068,902427,1319880,
+             19026333,1346823,1312742,19049024,1346686,19054768,1317967,1373225,
+             1367500,1354118,1326012,1331235,1361711,1366237,970250,1353776,1376289,
+             1341927,19026800,1344992,1342439,1316354,19026714,1327978,19055337,1308216,
+             974166,19126939,1322081,19132964,19063575,19012121,1350489,978555,19011908,
+             904639,950370,987406,1319232,1395058,1317640,1363749,1347384,741530,1342001,
+             1316262,1318853,1328165,1321636,19081667,1353766,942350,1313200,1363053,1305447,
+             992590,956874,19020994,1310756,907013,19103548,1307046,19011340,1314002,1401581,
+             1326378,1307863,1336926,1319998,19026551,1340128,19125119,1335539,905273,1332418,
+             1345858,1327256,19026847,1373928,19125719,1341238,19055034,1386957,1362225,1314577,
+             19011878)")
+```
+Download covariates data
+```r
+## Create SQL query
+covariates_query <-
+  DrugRepurposingToolKit::extract_clinical_data(drug_concept_id, 
+                                                biomarker_concept_id, 
+                                                table_name = "hypertension_amlodipine_drugs", 
+                                                table_type = "covariates", 
+                                                indication_drug_concept_ids)
+## Execute query
+hypertension_amlodipine_covariates <- 
+  bigrquery::bq_table_download(
+    bigrquery::bq_dataset_query(Sys.getenv("WORKSPACE_CDR"),
+                                covariates_query,
+                                billing=Sys.getenv("GOOGLE_PROJECT")))
+
+## Save `hypertension_amlodipine_covariates` to CSV file
+my_bucket <- Sys.getenv('WORKSPACE_BUCKET')
+covariates_file <- "hypertension_amlodipine_covariates.csv"
+write_csv(hypertension_amlodipine_covariates, covariates_file)
+system(paste0("gsutil cp ./", covariates_file, " ", my_bucket, "/data/"), intern=T)
+system(paste0("gsutil ls ", my_bucket, glue("/data/hypertension_amlodipine_covariates.csv")), intern=T)
+```
+Example `hypertension_amlodipine_covariates` table
+```{r echo=FALSE}
+covariates_table <- dplyr::tribble(
+  ~person_id, ~dob, ~gender_concept_id, ~race_concept_id, ~drug_concept_id, ~first_drug_exposure, ~last_drug_exposure, 
+  1, '1957-04-18', 8532, 38003598, 1332418, '2010-03-02', '2010-12-07', 
+  2, '1985-05-01', 8507, 8527, 1332418, '2016-09-30	', '2016-11-10', 
+  3, '1950-12-25', 8507, 8527, 1332418, '2011-01-24', '2014-08-01', 
+)
+DT::datatable(covariates_table, options = list(scrollX = TRUE))
+```
+
+Download drugs data
+```r
+## Create SQL query
+drugs_query <-
+  DrugRepurposingToolKit::extract_clinical_data(drug_concept_id, 
+                                                biomarker_concept_id, 
+                                                table_name = "hypertension_amlodipine_drugs", 
+                                                table_type = "drugs", 
+                                                indication_drug_concept_ids)
+## Execute query
+hypertension_amlodipine_drugs <- 
+  bigrquery::bq_table_download(
+    bigrquery::bq_dataset_query(Sys.getenv("WORKSPACE_CDR"),
+                                drugs_query,
+                                billing=Sys.getenv("GOOGLE_PROJECT")))
+
+## Save `hypertension_amlodipine_covariates` to CSV file
+my_bucket <- Sys.getenv('WORKSPACE_BUCKET')
+drugs_file <- "hypertension_amlodipine_drugs.csv"
+write_csv(hypertension_amlodipine_drugs, drugs_file)
+system(paste0("gsutil cp ./", drugs_file, " ", my_bucket, "/data/"), intern=T)
+system(paste0("gsutil ls ", my_bucket, glue("/data/hypertension_amlodipine_drugs.csv")), intern=T)
+```
+
+Example `hypertension_amlodipine_drugs` table
+```{r echo=FALSE}
+drugs_table <- dplyr::tribble(
+  ~person_id, ~start_date, ~end_date, ~drug_exposure_start_date, ~drug_concept_id, 
+  1, '2009-03-02', '2011-03-02', '2010-03-02', 1332421, 
+  2, '2015-09-30', '2017-09-30', '2016-11-09', 19103475,  
+  3, '2010-01-24', '2012-01-24', '2011-01-24', 957138, 
+)
+DT::datatable(drugs_table, options = list(scrollX = TRUE))
+```
+
+Download biomarkers data
+```r
+## Create SQL query
+biomarkers_query <-
+  DrugRepurposingToolKit::extract_clinical_data(drug_concept_id, 
+                                                biomarker_concept_id, 
+                                                table_name = "hypertension_amlodipine_drugs", 
+                                                table_type = "biomarkers", 
+                                                indication_drug_concept_ids)
+## Execute query
+hypertension_amlodipine_biomarkers <- 
+  bigrquery::bq_table_download(
+    bigrquery::bq_dataset_query(Sys.getenv("WORKSPACE_CDR"),
+                                biomarkers_query,
+                                billing=Sys.getenv("GOOGLE_PROJECT")))
+
+## Save `hypertension_amlodipine_covariates` to CSV file
+my_bucket <- Sys.getenv('WORKSPACE_BUCKET')
+biomarkers_file <- "hypertension_amlodipine_biomarkers.csv"
+write_csv(hypertension_amlodipine_biomarkers, biomarkers_file)
+system(paste0("gsutil cp ./", drugs_file, " ", my_bucket, "/data/"), intern=T)
+system(paste0("gsutil ls ", my_bucket, glue("/data/hypertension_amlodipine_biomarkers.csv")), intern=T)
+```
+
+Example `hypertension_amlodipine_biomarkers` table
+```{r echo=FALSE}
+biomarkers_table <- dplyr::tribble(
+  ~person_id, ~start_date, ~measurement_date, ~end_date, ~measurement_concept_id, ~value_as_number,
+  1, '2009-03-02', '2010-03-02', '2011-03-02', 3004249, 145, 
+  2, '2015-09-30', '2017-06-07', '2017-09-30', 3004249, 153, 
+  3, '2010-01-24', '2011-01-24', '2012-01-24', 3004249, 135, 
+)
+DT::datatable(biomarkers_table, options = list(scrollX = TRUE))
+```
+
+## Process data
+Process data to create table to perform paired two-tailed t-test
+```r
+#Import data from saved CSV files
+r_c <- vroom::vroom("hypertension_amlodipine_covariates.csv",
+                    .name = janitor::make_clean_names, 
+                    col_types = cols())
+r_d <- vroom::vroom("hypertension_amlodipine_drugs.csv",
+                    .name = janitor::make_clean_names, 
+                    col_types = cols())
+r_b <- vroom::vroom("hypertension_amlodipine_biomarkers.csv",
+                    .name = janitor::make_clean_names, 
+                    col_types = cols())
+
+
+#Prepare data for paired two-tailed t-test
+drug <- "amlodipine"
+phenotype <- "Hypertension"
+biomarker <- "Systolic Blood Pressure"
+indication_drugs <- DrugRepurposingToolKit::drugsHypertension
+concept_id_exclusions <- c(2212451)
+
+htn_amlodipine_processed_data <- 
+  DrugRepurposingToolKit::clean_process_clinical_data(
+    drug, phenotype, biomarker, indication_drugs, concept_id_exclusions, 
+    r_c, r_d, r_b) %>% 
+  mutate(drug = "amlodipine")
+```
+
+Example `htn_amlodipine_processed_data` table
+```{r echo = FALSE}
+procssed_data_table <- dplyr::tribble(
+  ~person_id, ~gender_concept_id, ~race_concept_id, ~start_date, ~first_drug_exposure, ~final_end_date, ~age, ~biomarker_baseline_value, ~biomarker_treatment_value, ~biomarker_change, ~biomarker_name, ~drug, 
+  1, 8532, 38003598, '2009-03-02', '2010-03-02', '2010-12-07', 51.87, 143, 138, -5, "Systolic Blood Pressure", "amlodipine",
+  2, 8507, 8527, '2015-09-30', '2016-09-30	', '2016-11-10', 30.41, 140, 140, 0, "Systolic Blood Presure", "amlodipine",  
+)
+DT::datatable(procssed_data_table, options = list(scrollX = TRUE))
+```
+
+## Run hypothesis test
+```r
+#Run paired two-tailed t-test
+htest <- t.test(htn_amlodipine_processed_data$biomarker_treatment_value, 
+                htn_amlodipine_processed_data$biomarker_baseline_value, 
+                conf.level = 0.95, 
+                paired = TRUE)
+tidy_htest <- tidy(htest) %>% 
+    mutate(drug = drug, 
+           se = htest$stderr,
+           biomarker = "Systolic Blood Pressure", 
+           phenotype = "Hypertension", 
+           source = "All of Us") %>% 
+    select(source, drug, phenotype, biomarker, estimate, se, statistic, 
+           p.value, parameter, conf.low, conf.high, method, alternative)
+
+tidy_htest
+```
+
+Example `tidy_htest` table
+```{r echo = FALSE}
+example_htest <- dplyr::tribble(
+  ~source, ~drug, ~phenotype, ~biomarker, ~estimate, ~se, ~statistic, ~p.value, ~parameter, ~conf.low, ~conf.high, ~method, ~alternative, 
+  "All of Us", "amlodipine", "Hypertension", "Systolic Blood Pressure", -5.24, 0.52, -9.99, 3.92e-22, 733, -6.27, -4.21, "Paired t-test", "two.sided", 
+)
+DT::datatable(example_htest, options = list(scrollX = TRUE))
+```
+
+## Metadata
+
+Workspace:  
+
+  - Name: Drug Repurposing Validation Study  
+  - Owner: patrickwu@researchallofus.org  
+  
+Dataset:  
+
+  - All of Us Dataset v4  
+  - Data access level: Registered  
+
+Cloud compute profile:  
+
+  - CPUs: 4  
+  - RAM (GB): 15  
+  - Disk (GB): 100  
+  - Compute type: Standard VM  
+  
+Time and cost to run notebook (without installing packages):  
+
+  - Time: < 1 hour  
+  - Cost: < $0.20 USD  
