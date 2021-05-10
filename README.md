@@ -1,6 +1,6 @@
 DrugRepurposingToolKit R package
 ====================
-A Portable Approach Integrating Gene Expression Data and Electronic Health Records to Repurpose Drugs.
+A High-Throughput Approach Integrating Gene Expression Signatures and Clinical Data to Repurpose Drugs.
 
 Introduction
 ============

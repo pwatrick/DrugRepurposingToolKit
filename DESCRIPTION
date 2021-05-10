@@ -1,14 +1,14 @@
 Package: DrugRepurposingToolKit
-Title: A Portable Approach Integrating Transcriptomic Data and Electronic Health Records to Repurpose Drugs
+Title: A High-Throughput Approach Integrating Gene Expression Signatures and Clinical Data to Repurpose Drugs
 Version: 0.1
-Date: 2021-03-27
+Date: 2021-05-10
 Authors@R:
     person(given = "Patrick",
            family = "Wu",
            role = c("aut", "cre"),
            email = "pwatrick510@gmail.com",
            comment = c(ORCID = "0000-0002-1437-6688"))
-Description: This R package contains functions to integrate transcriptomic and clinical data to identify and validate drug repurposing candidates.
+Description: This R package contains functions to integrate gene expression and clinical data to identify and validate drug repurposing candidates.
 URL: https://pwatrick.github.io/DrugRepurposingToolKit, https://pwatrick.github.io/DrugRepurposingToolKit/, https://github.com/pwatrick/DrugRepurposingToolKit
 License: Apache License (>= 2)
 BugReports: wei-qi.wei(AT)vumc.org
