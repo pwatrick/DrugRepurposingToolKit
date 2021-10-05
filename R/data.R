@@ -1,6 +1,29 @@
 #' @importFrom tibble tibble
 NULL
 
+#' ohdsi_icd_elix
+#'
+#' For extracting ICD codes from OMOP CDM to calculate Elixhauser comorbidity scores
+#'
+#' @format A data frame with 5 variables: \code{concept_id}, \code{concept_name}, \code{vocabulary_id}, \code{concept_code}, \code{concept_code_strip}
+#' @source Elixhauser, A., Steiner, C., Harris, D. R. & Coffey, R. M. Comorbidity measures for use with administrative data. Med. Care 36, 8–27 (1998)
+#' @source van Walraven C, Austin PC, Jennings A, Quan H and Forster AJ. A modification of the Elixhauser comorbidity measures into a point system for hospital death using administrative data. Medical Care 2009; 47(6):626-633. DOI: 10.1097/MLR.0b013e31819432e5
+"ohdsi_icd_elix"
+
+#' vw_weights
+#'
+#' For calculating Elixhauser comorbidity scores
+#'
+#' @format A data frame with 2 variables: \code{group} and \code{weight}
+#' @format A data frame with 31 rows and 2 variables:
+#' \describe{
+#'   \item{group}{Elixhauser comorbidity group. From Elixhauser et al 1998}
+#'   \item{weight}{Comorbidity weight. From van Walraven et al 2009}
+#' }
+#' @source Elixhauser, A., Steiner, C., Harris, D. R. & Coffey, R. M. Comorbidity measures for use with administrative data. Med. Care 36, 8–27 (1998)
+#' @source van Walraven C, Austin PC, Jennings A, Quan H and Forster AJ. A modification of the Elixhauser comorbidity measures into a point system for hospital death using administrative data. Medical Care 2009; 47(6):626-633. DOI: 10.1097/MLR.0b013e31819432e5
+"vw_weights"
+
 #' dr_ts_tutorial_data
 #'
 #'

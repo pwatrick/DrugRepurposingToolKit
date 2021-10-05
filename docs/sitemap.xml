@@ -7,6 +7,9 @@
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/add_subanalysis_flags.html</loc>
   </url>
   <url>
+    <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/calculate_comorbidity_scores.html</loc>
+  </url>
+  <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/clean_process_clinical_data.html</loc>
   </url>
   <url>
@@ -34,16 +37,28 @@
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/extract_clinical_data.html</loc>
   </url>
   <url>
+    <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/extract_icd_codes.html</loc>
+  </url>
+  <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/map_drugs_to_ingredients.html</loc>
   </url>
   <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/observation_period_drug_exposures.html</loc>
   </url>
   <url>
+    <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/ohdsi_icd_elix.html</loc>
+  </url>
+  <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/process_biomarker.html</loc>
   </url>
   <url>
+    <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/process_clinical_data_lmm.html</loc>
+  </url>
+  <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/process_covariates.html</loc>
+  </url>
+  <url>
+    <loc>https://pwatrick.github.io/DrugRepurposingToolKit/reference/vw_weights.html</loc>
   </url>
   <url>
     <loc>https://pwatrick.github.io/DrugRepurposingToolKit/articles/all_of_us_example.html</loc>
