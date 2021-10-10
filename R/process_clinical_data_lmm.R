@@ -70,7 +70,7 @@ process_clinical_data_lmm <- function(clinical_results, r_i) {
   t_gender_race <- clinical_results %>%
     mutate(
       race_not_white = if_else(race_concept_id == 8527, 0, 1),
-      gender_female = if_else(gender_concept_id == 8532, 1, 0)
+      gender_female = if_else(gender_concept_id %in% c(8532, 45878463), 1, 0)
     )
 
   #Merge tables
