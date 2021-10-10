@@ -9,7 +9,7 @@
 #' record (EHR) databases that have adopted the Observational Medical Outcomes
 #' Partnership (OMOP) Common Data Model (CDM) format, for linear mixed model analysis.
 #'
-#' Updated: 2021-10-02
+#' Updated: 2021-10-10
 #'
 #' @param clinical_results      A tibble
 #' @param r_i                   A tibble
