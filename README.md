@@ -1,6 +1,8 @@
 DrugRepurposingToolKit R package
 ====================
-A High-Throughput Approach Integrating Gene Expression Signatures and Clinical Data to Repurpose Drugs.
+A High-Throughput Approach Integrating Gene Expression Signatures and Clinical Data to Repurpose Drugs.  
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5747805.svg)](https://doi.org/10.5281/zenodo.5747805)
 
 Introduction
 ============
