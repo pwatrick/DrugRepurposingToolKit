@@ -37,4 +37,4 @@ This package is ready for use.
 
 Citation
 ===========
-Forthcoming  
+Wu, P., Feng, Q., Kerchberger, V.E. et al. Integrating gene expression and clinical data to identify drug repurposing candidates for hyperlipidemia and hypertension. Nat Commun **13**, 46 (2022). https://doi.org/10.1038/s41467-021-27751-1
