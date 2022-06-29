@@ -148,7 +148,7 @@ hypertension_amlodipine_biomarkers <-
 my_bucket <- Sys.getenv('WORKSPACE_BUCKET')
 biomarkers_file <- "hypertension_amlodipine_biomarkers.csv"
 write_csv(hypertension_amlodipine_biomarkers, biomarkers_file)
-system(paste0("gsutil cp ./", drugs_file, " ", my_bucket, "/data/"), intern=T)
+system(paste0("gsutil cp ./", biomarkers_file, " ", my_bucket, "/data/"), intern=T)
 system(paste0("gsutil ls ", my_bucket, glue("/data/hypertension_amlodipine_biomarkers.csv")), intern=T)
 ```
 
