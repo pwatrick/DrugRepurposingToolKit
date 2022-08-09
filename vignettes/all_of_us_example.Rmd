@@ -109,7 +109,7 @@ hypertension_amlodipine_drugs <-
                                 drugs_query,
                                 billing=Sys.getenv("GOOGLE_PROJECT")))
 
-## Save `hypertension_amlodipine_covariates` to CSV file
+## Save `hypertension_amlodipine_drugs` to CSV file
 my_bucket <- Sys.getenv('WORKSPACE_BUCKET')
 drugs_file <- "hypertension_amlodipine_drugs.csv"
 write_csv(hypertension_amlodipine_drugs, drugs_file)
